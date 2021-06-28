@@ -4,7 +4,8 @@ import useFetch from './useFetch';
 
 const Home = () => {
 
-    const {blogs, isPending, error} = useFetch('http://localhost:8000/blogss');
+    const {blogs, isPending, error} = useFetch('http://localhost:8000/blogs');
+
     const handleClick = () => {
         console.log("Hello there")
     }
@@ -19,7 +20,7 @@ const Home = () => {
         {isPending && <div>Loading... </div> }
         {blogs && <Bloglist blogs={blogs} title="All blogs"/>}
         <button onClick={handleClick}>Click Me</button>
-        {blogs && <Bloglist blogs = {blogs.filter((blog) => blog.author == "mario")} title="Mario's blogs"/>}
+        {blogs && <Bloglist blogs = {blogs.filter((blog) => blog.author === "mario")} title="Mario's blogs"/>}
       </div>
     );
   }

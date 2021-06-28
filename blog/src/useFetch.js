@@ -1,4 +1,4 @@
-const { useEffect, useState } = require("react")
+import { useState, useEffect } from "react";
 
 // Custom hook for getting blog data, custom hooks must begin with 'use' or they won't work
 const useFetch = (url) => {
@@ -8,7 +8,9 @@ const useFetch = (url) => {
     const [error, setError] = useState(null);
 
     useEffect( () => {
-        fetch(url)
+        const abortCont = new AbortController();
+        
+        fetch(url, { signal: abortCont.signal })
             .then(res => {
                 if (!res.ok) {
                     throw Error('Could not fetch data')
@@ -20,9 +22,15 @@ const useFetch = (url) => {
                 setPending(false);
             })
             .catch(err => {
-                setError(err.message);
-                setPending(false);
+                if (err.name === 'AbortError') {
+                    console.log('fetch aborted');
+                }
+                else {
+                    setError(err.message);
+                    setPending(false);
+                }
             })
+        return () => abortCont.abort();
     }, [url]); // empty dependency array means only fire this function on the initial load not when data changes
 
     return {data, isPending, error}
