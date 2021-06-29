@@ -2,8 +2,11 @@ import './index.css';
 import Home from './Home';
 import Navbar from './Navbar';
 import Create from './Create';
+import NotFound from './NotFound';
 import BlogDetails from './BlogDetails';
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+
+// Catch alls must be at the bottom of the html structure otherwise they will catch all requests
 
 function App() {
   return (
@@ -20,6 +23,9 @@ function App() {
             </Route>
             <Route path="/blogs/:id">
               <BlogDetails/>
+            </Route>
+            <Route path="*">
+              <NotFound/>
             </Route>
           </Switch>
         </div>
